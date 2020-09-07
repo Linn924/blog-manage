@@ -1,5 +1,3 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
 import Home from '../components/Home.vue'
 import Welecome from '../components/Welecome.vue'
 import BlogList from '../components/BlogList.vue'
