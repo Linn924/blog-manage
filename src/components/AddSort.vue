@@ -66,24 +66,24 @@ export default {
     methods: {
         //获取分类与标签数据函数
         async getSTData(){
-            const {data:res} = await this.$http.get("http://139.196.210.43:0924/blogdatadetail")
-            if(res.code != 200) return this.$message.error(`${res.tips}`)
+            const {data:res} = await this.$http.get("blogdatadetail")
+            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.sortList = res.data.data1
         },
         //添加分类
         async addsort(){
-            if(this.sortForm.sort_name.trim() === '') return this.$message.error('请输入数据')
-            const {data:res} = await this.$http.post("http://139.196.210.43:0924/addsort",this.sortForm)
+            if(this.sortForm.sort_name.trim() === '') return this.$message({message: '请输入数据',type: 'error',duration:1000})
+            const {data:res} = await this.$http.post("addsort",this.sortForm)
             this.sortForm.sort_name = ''
-            if(res.code != 200) return this.$message.error(`${res.tips}`)
-            this.$message.success(`${res.tips}`)
+            if(res.code != 200) this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.getSTData()
         },
         //根据id删除分类
         async deleteSort(value){
-            const {data:res} = await this.$http.post('http://139.196.210.43:0924/deletesort',{id:value.id})
-            if(res.code != 200) return this.$message.error(`${res.tips}`)
-            this.$message.success(`${res.tips}`)
+            const {data:res} = await this.$http.post('deletesort',{id:value.id})
+            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.getSTData()
         },
         editSort(value){
@@ -91,9 +91,9 @@ export default {
             this.editSortDialog = true
         },
         async updateSort(){
-            const {data:res} = await this.$http.post('http://139.196.210.43:0924/updatesort',this.updateSortData)
-            if( res.code != 200) return this.$message.error(`${res.tips}`)
-            this.$message.success(`${res.tips}`)
+            const {data:res} = await this.$http.post('updatesort',this.updateSortData)
+            if( res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.getSTData()
             this.editSortDialog = false
         },

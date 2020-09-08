@@ -1,12 +1,11 @@
 <template>
-    <div class="addblog">
+    <section>
 
         <!-- 面包屑导航区域 -->
         <el-breadcrumb separator="/">
             <el-breadcrumb-item><a href="/home" @click="toHome">首页</a></el-breadcrumb-item>
             <el-breadcrumb-item>博客数据</el-breadcrumb-item>
         </el-breadcrumb>
-        <!-- 面包屑导航区域 end-->
 
         <!-- 卡牌视图区域 -->
         <el-card>
@@ -22,7 +21,6 @@
                     <el-button type="primary" disabled>添加博客</el-button>
                 </el-col>
             </el-row>
-            <!-- 搜索与添加区域 end-->
 
             <!-- 表格中的数据 -->
             <el-table :data="blogList" border stripe>
@@ -43,17 +41,15 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- 表格中的数据 end-->
 
             <!-- 分页区域-->
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="queryList.pagenum" :page-sizes="[1, 2, 5]" :page-size="queryList.pagesize"
+                :current-page="queryList.pagenum" :page-sizes="[3, 5, 8]" :page-size="queryList.pagesize"
                 layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
             <!-- 分页区域 end-->
 
         </el-card>
-        <!-- 卡牌视图区域 end-->
         
         <!-- 编辑博客对话框 -->
         <el-dialog title="编辑博客" :visible.sync="editBlogDialog" width="50%">
@@ -93,9 +89,8 @@
                 </el-form>
             </div>
         </el-dialog>
-        <!-- 编辑博客对话框 end-->
 
-    </div>
+    </section>
 </template>
 
 <script>
@@ -108,7 +103,7 @@ export default {
             queryList:{//分页数据
                 key:'',
                 pagenum:1,
-                pagesize:5
+                pagesize:8
             },
             total:0,//博客总数
             html:'',
@@ -145,22 +140,22 @@ export default {
     methods: {
         //获取博客数据
         async getBlogData(){
-            const {data:res} = await this.$http.get("http://139.196.210.43:0924/blogdata",{params:this.queryList})
-            if(res.code != 200) return this.$message.error(`${res.tips}`)
+            const {data:res} = await this.$http.get("blogdata",{params:this.queryList})
+            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.blogList = res.data
             this.total = res.total
         },
         //获取分类与标签数据
         async getSTData(){
-            const {data:res} = await this.$http.get("http://139.196.210.43:0924/blogdatadetail")
-            if(res.code != 200) return this.$message.error(`${res.tips}`)
+            const {data:res} = await this.$http.get("blogdatadetail")
+            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.sortList = res.data.data1
             this.technologyList = res.data.data2
         },
         //根据id删除对应blog
         async deleteBlog(value){
-            const {data:res} = await this.$http.post('http://139.196.210.43:0924/deleteblog',{id:value.id})
-            if( res.code != 200) return this.$message.error(`${res.tips}`)
+            const {data:res} = await this.$http.post('deleteblog',{id:value.id})
+            if( res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.$message.success(`${res.tips}`)
             this.getBlogData()
         },
@@ -185,8 +180,8 @@ export default {
             this.blogForm.sort_name = this.blogForm.sortId
             if(this.blogForm.technology_name == this.oldTname)
             this.blogForm.technology_name = this.blogForm.technologyId
-            const {data:res} = await this.$http.post('http://139.196.210.43:0924/updateblog',this.blogForm)
-            if( res.code != 200) return this.$message.error(`${res.tips}`)
+            const {data:res} = await this.$http.post('updateblog',this.blogForm)
+            if( res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.$message.success(`${res.tips}`)
             this.getBlogData()
             this.showTo = true
@@ -204,9 +199,7 @@ export default {
             this.getBlogData()
         },
         //点击首页 移除sessionStorage中的id
-        toHome(){
-            window.sessionStorage.removeItem("id");
-        }
+        toHome(){window.sessionStorage.removeItem("id");}
     }
 }
 </script>
@@ -220,7 +213,7 @@ export default {
        text-align: center;
    }
 }
-.addblog .el-dialog .el-row{
+.el-dialog .el-row{
    .textarea{
        height: 500px;
        margin-top: 20px;
@@ -235,7 +228,7 @@ export default {
        overflow-x: hidden;
    }
 }
-.addblog .el-form{
+.el-form{
     margin-top: 20px;
 }
 /*壁纸盒子滚动条样式*/

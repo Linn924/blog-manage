@@ -10,10 +10,10 @@
             <el-button type="info" @click="loginDialog = true" v-show="btnLogin">登录</el-button>
             <el-button type="info" @click="logout" v-show="btnLogout">退出</el-button>
         </el-header>
-        <!-- 头部区域 end-->
 
         <!-- 页面主题区域 -->
         <el-container>
+
             <!-- 侧边栏 -->
             <el-aside width="192px">
                 <ul>
@@ -22,13 +22,14 @@
                     </li>
                 </ul>
             </el-aside>
+
             <!-- 右侧内容主体 -->
             <el-main>
                 <!-- 路由占位符 -->
                 <router-view></router-view>
             </el-main>
+
         </el-container>
-        <!-- 页面主题区域 end-->
 
         <!-- 登录对话框 -->
         <el-dialog title="LOGIN" :visible.sync="loginDialog" width="30%" center>
@@ -45,7 +46,6 @@
                 <el-button type="primary" @click="login">确 定</el-button>
             </span>
         </el-dialog>
-        <!-- 登录对话框 end-->
 
     </el-container>
 </template>
@@ -95,9 +95,9 @@ export default {
         async login(){
              this.$refs.loginFormRef.validate( async valid => {
                 if(!valid) return
-                const {data:res} = await this.$http.post("http://139.196.210.43:0924/login",this.loginForm)
-                if(res.code != 200) return this.$message.error('登录失败')
-                this.$message.success(`${res.tips}`)
+                const {data:res} = await this.$http.post("login",this.loginForm)
+                if(res.code != 200) return this.$message({message: '登录失败',type: 'error',duration:1000})
+                this.$message({message: `${res.tips}`,type: 'success',duration:1000})
                 window.sessionStorage.setItem('token', res.token)
                 this.reload()
              })
@@ -116,7 +116,7 @@ export default {
         logout(){
             window.sessionStorage.removeItem('token')
             this.reload()
-            this.$message.success("退出成功")
+            this.$message({message: '登出成功',type: 'success',duration:1000})
         }
     }
 }

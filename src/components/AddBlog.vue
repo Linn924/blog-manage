@@ -92,8 +92,8 @@ export default {
     methods: {
         //获取分类与标签数据
         async getSTData(){
-            const {data:res} = await this.$http.get("http://139.196.210.43:0924/blogdatadetail")
-            if(res.code != 200) return this.$message.error(`${res.tips}`)
+            const {data:res} = await this.$http.get("blogdatadetail")
+            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.sortList = res.data.data1
             this.technologyList = res.data.data2
         },
@@ -102,7 +102,7 @@ export default {
             window.sessionStorage.removeItem("id");
         },
         clickToBtn(){
-            if(this.blogForm.content == '') return this.$message.error('请填写内容')
+            if(this.blogForm.content == '') return this.$message({message: '请填写内容',type: 'error',duration:1000})
             this.showTo = false
             this.showBack = true
         },
@@ -111,9 +111,9 @@ export default {
             this.showBack = false
         },
         async addBlog(){
-            const {data:res} = await this.$http.post('http://139.196.210.43:0924/addblog',this.blogForm)
-            if(res.code != 200) return this.$message.error(`${res.tips}`)
-            this.$message.success(`${res.tips}`)
+            const {data:res} = await this.$http.post('addblog',this.blogForm)
+            if(res.code != 200) this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.blogForm = {
                 title:'',introduce:'',date:'',sortname:'',
                 mdname:'',technologyname:'',content:''

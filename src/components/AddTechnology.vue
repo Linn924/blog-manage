@@ -66,24 +66,24 @@ export default {
     methods: {
         //获取分类与标签数据函数
         async getSTData(){
-            const {data:res} = await this.$http.get("http://139.196.210.43:0924/blogdatadetail")
-            if(res.code != 200) return this.$message.error(`${res.tips}`)
+            const {data:res} = await this.$http.get("blogdatadetail")
+            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.technologyList = res.data.data2
         },
         //添加标签
         async addtechnology(){
-            if(this.technologyForm.technology_name.trim() === '') return this.$message.error('请输入数据')
-            const {data:res} = await this.$http.post("http://139.196.210.43:0924/addtechnology",this.technologyForm)
+            if(this.technologyForm.technology_name.trim() === '') return this.$message({message: '请输入数据',type: 'error',duration:1000})
+            const {data:res} = await this.$http.post("addtechnology",this.technologyForm)
             this.technologyForm.technology_name = ''
-            if(res.code != 200) return this.$message.error(`${res.tips}`)
-            this.$message.success(`${res.tips}`)
+            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.getSTData()
         },
         //根据id删除标签
         async deleteTechnology(value){
-            const {data:res} = await this.$http.post('http://139.196.210.43:0924/deletetechnology',{id:value.id})
-            if(res.code != 200) return this.$message.error(`${res.tips}`)
-            this.$message.success(`${res.tips}`)
+            const {data:res} = await this.$http.post('deletetechnology',{id:value.id})
+            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.getSTData()
         },
         editTechnology(value){
@@ -91,9 +91,9 @@ export default {
             this.editTDialog = true
         },
         async updateT(){
-            const {data:res} = await this.$http.post('http://139.196.210.43:0924/updatetechnology',this.updateTData)
-            if( res.code != 200) return this.$message.error(`${res.tips}`)
-            this.$message.success(`${res.tips}`)
+            const {data:res} = await this.$http.post('updatetechnology',this.updateTData)
+            if( res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.getSTData()
             this.editTDialog = false
         },
