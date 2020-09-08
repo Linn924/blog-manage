@@ -1,9 +1,16 @@
-import Home from '../components/Home.vue'
-import Welecome from '../components/Welecome.vue'
-import BlogList from '../components/BlogList.vue'
-import AddSort from '../components/AddSort.vue'
-import AddTechnology from '../components/AddTechnology.vue'
-import AddBlog from '../components/AddBlog.vue'
+// import Home from '../components/Home.vue'
+// import Welecome from '../components/Welecome.vue'
+// import BlogList from '../components/BlogList.vue'
+// import AddSort from '../components/AddSort.vue'
+// import AddTechnology from '../components/AddTechnology.vue'
+// import AddBlog from '../components/AddBlog.vue'
+
+const Home = () => import( /* webpackChunkName: "home_welecome_blogList" */ '../components/Home.vue')
+const Welecome = () => import( /* webpackChunkName: "home_welecome_blogList" */ '../components/Welecome.vue')
+const BlogList = () => import( /* webpackChunkName: "home_welecome_blogList" */ '../components/BlogList.vue')
+const AddSort = () => import( /* webpackChunkName: "addSort_addTechnology_addBlog" */ '../components/AddSort.vue')
+const AddTechnology = () => import( /* webpackChunkName: "addSort_addTechnology_addBlog" */ '../components/AddTechnology.vue')
+const AddBlog = () => import( /* webpackChunkName: "addSort_addTechnology_addBlog" */ '../components/AddBlog.vue')
 
 Vue.use(VueRouter)
 

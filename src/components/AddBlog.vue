@@ -6,7 +6,6 @@
             <el-breadcrumb-item><a href="/home" @click="toHome">首页</a></el-breadcrumb-item>
             <el-breadcrumb-item>发布博客</el-breadcrumb-item>
         </el-breadcrumb>
-        <!-- 面包屑导航区域 end-->
 
         <!-- 卡牌视图区域 -->
         <el-card>
@@ -46,7 +45,6 @@
                 </el-form>
             </div>
         </el-card>
-        <!-- 卡牌视图区域 end-->
 
     </div>
 </template>
