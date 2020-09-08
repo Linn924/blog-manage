@@ -125,7 +125,7 @@ export default {
 <style lang="less" scoped>
 .home-container {
     height: 100%;
-    background: url(https://s1.ax1x.com/2020/04/27/JWGZee.jpg) no-repeat;
+    background: url(https://s1.ax1x.com/2020/05/28/te3hcT.jpg) no-repeat;
 }
 .el-header {
     display: flex;
