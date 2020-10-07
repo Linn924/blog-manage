@@ -4,28 +4,29 @@
         <!-- 头部区域 -->
         <el-header>
             <div>
-                <img src="https://s1.ax1x.com/2020/05/09/YMs8DP.jpg">
+                <img src="https://s1.ax1x.com/2020/09/04/wkjLL9.png">
                 <span>博客后台管理系统&nbsp;v1.0</span>
             </div>
             <el-button type="info" @click="loginDialog = true" v-show="btnLogin">登录</el-button>
-            <el-button type="info" @click="logout" v-show="btnLogout">退出</el-button>
+            <el-button type="info" @click="logout" v-show="btnLogout">登出</el-button>
         </el-header>
 
         <!-- 页面主题区域 -->
         <el-container>
-
             <!-- 侧边栏 -->
             <el-aside width="192px">
-                <ul>
-                    <li v-for="item in routerList" :key="item.id" @click="clickLi(item.id)">
-                        <router-link :to="item.path" :class="id == item.id ? 'changeColor' : '' ">{{item.content}}</router-link>
+                <nav>
+                    <li v-for="item in routerList" :key="item.id"
+                        @click="clickLi(item.id)">
+                        <router-link :to="item.path" :class="id == item.id ?
+                            'changeColor' : '' ">{{item.content}}
+                        </router-link>
                     </li>
-                </ul>
+                </nav>
             </el-aside>
 
             <!-- 右侧内容主体 -->
             <el-main>
-                <!-- 路由占位符 -->
                 <router-view></router-view>
             </el-main>
 
@@ -35,10 +36,12 @@
         <el-dialog title="LOGIN" :visible.sync="loginDialog" width="30%" center>
             <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules">
                 <el-form-item prop="username">
-                    <el-input v-model="loginForm.username" clearable prefix-icon="el-icon-user-solid" placeholder="username" autofocus="true"></el-input>
+                    <el-input v-model="loginForm.username" clearable prefix-icon="el-icon-user-solid"
+                    placeholder="username" autofocus="true"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input v-model="loginForm.password" clearable prefix-icon="el-icon-lock" type="password" placeholder="password"></el-input>
+                    <el-input v-model="loginForm.password" clearable prefix-icon="el-icon-lock"
+                    type="password" placeholder="password"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -52,7 +55,7 @@
 
 <script>
 export default {
-    inject:['reload'],//注入App里的reload方法
+    inject:['reload'],
     data(){
         return{
             routerList:[//侧边栏路由信息
@@ -74,7 +77,7 @@ export default {
                 ],
                 password:[
                     { required: true, message: '请输入密码', trigger: 'blur' },
-                    { min: 3, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+                    { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
                 ]
             },
             btnLogin:true,//控制登录按钮的显示与隐藏
@@ -125,7 +128,7 @@ export default {
 <style lang="less" scoped>
 .home-container {
     height: 100%;
-    background: url(https://s1.ax1x.com/2020/05/28/te3hcT.jpg) no-repeat;
+    background-color: #A9B0BA;
 }
 .el-header {
     display: flex;
@@ -133,7 +136,7 @@ export default {
     align-items: center;
     color: #fff;
     font-size: 16px;
-    > div{
+    >div{
         display: flex;
         align-items: center;
         margin-left: 20px;
@@ -142,14 +145,12 @@ export default {
             height: 40px;
             border-radius: 50%;
         }
-        span {
-            margin-left: 20px;
-        }
+        span {margin-left: 20px;}
     }
     
 }
 .el-aside {
-    ul{
+    nav{
         display: flex;
         flex-flow: column wrap;
         align-items: center;
@@ -157,9 +158,7 @@ export default {
         padding: 0!important;
         li{
             width: 100%;
-            &:hover{
-                background-color: #296987;
-            }
+            &:hover{background-color: rgba(255,255,255,.2);}
             a{
                 display: block;
                 width: 100%;
@@ -173,22 +172,16 @@ export default {
         }
     }
 }
-.el-main {
-    background-color: #eaedf1;
-}
-.iconfont {
-    margin-right: 10px;
-}
+.el-main {background-color: #fff;}
+.iconfont {margin-right: 10px;}
 .toggle-button {
     background-color: #4a5064;
     font-size: 10px;
     line-height: 24px;
     color: #fff;
     text-align: center;
-    letter-spacing: 0.2em;//设置文本字符的间距
-    cursor: pointer;//鼠标放上去变成小手
+    letter-spacing: 0.2em;
+    cursor: pointer;
 }
-.changeColor{
-    color: #1E90FF!important;
-}
+.changeColor{color: #1E90FF!important;}
 </style>

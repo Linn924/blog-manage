@@ -3,7 +3,7 @@
 
         <!-- 面包屑导航区域 -->
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item><a href="/home" @click="toHome">首页</a></el-breadcrumb-item>
+            <el-breadcrumb-item>首页</el-breadcrumb-item>
             <el-breadcrumb-item>博客数据</el-breadcrumb-item>
         </el-breadcrumb>
 
@@ -13,12 +13,10 @@
             <!-- 搜索与添加区域 -->
             <el-row :gutter="20">
                 <el-col :span="8">
-                    <el-input placeholder="请输入内容" v-model="input" clearable>
-                        <el-button slot="append" icon="el-icon-search"></el-button>
+                    <el-input placeholder="请输入内容" v-model="input" @keyup.enter.native="search"
+                        clearable @clear="getBlogData">
+                        <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
                     </el-input>
-                </el-col>
-                <el-col :span="4">
-                    <el-button type="primary" disabled>添加博客</el-button>
                 </el-col>
             </el-row>
 
@@ -35,17 +33,20 @@
                 <el-table-column label="操作" width="180px">
                     <template slot-scope="scope">
                         <!-- 修改按钮 -->
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="editBlog(scope.row)"></el-button>
+                        <el-button type="primary" icon="el-icon-edit" size="mini" 
+                        @click="editBlog(scope.row)"></el-button>
                         <!-- 删除按钮 -->
-                        <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteBlog(scope.row)"></el-button>
+                        <el-button type="danger" icon="el-icon-delete" size="mini" 
+                        @click="deleteBlog(scope.row)"></el-button>
                     </template>
                 </el-table-column>
             </el-table>
 
             <!-- 分页区域-->
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="queryList.pagenum" :page-sizes="[3, 5, 8]" :page-size="queryList.pagesize"
-                layout="total, sizes, prev, pager, next, jumper" :total="total">
+            <el-pagination @size-change="handleSizeChange" 
+                :current-page="queryList.pagenum" :page-sizes="[3, 5, 8]" 
+                :page-size="queryList.pagesize"
+                layout="total, sizes, prev, pager, next" :total="total">
             </el-pagination>
             <!-- 分页区域 end-->
 
@@ -57,8 +58,14 @@
             <el-button type="primary" @click="clickBackBtn" v-show="showBack">上一步</el-button>
             <el-button type="primary" @click="updateBlog" v-show="showBack">更新</el-button>
             <el-row :gutter="2" v-show="showTo">
-                <el-col :span="12"><el-input type="textarea" v-model="blogForm.content" class="textarea"></el-input></el-col>
-                <el-col :span="12"><div v-html="html" v-highlight class="markdown-body md" v-show="showMd"></div></el-col>
+                <el-col :span="12">
+                    <el-input type="textarea" v-model="blogForm.content" class="textarea">
+                    </el-input>
+                </el-col>
+                <el-col :span="12">
+                    <div v-html="html" v-highlight class="markdown-body md" v-show="showMd">
+                    </div>
+                </el-col>
             </el-row>
             <div v-show="showBack">
                 <el-form :model="blogForm" label-width="80px">
@@ -69,11 +76,13 @@
                         <el-input type="textarea" v-model="blogForm.introduce"></el-input>
                     </el-form-item>
                     <el-form-item label="时间">
-                        <el-date-picker v-model="blogForm.date" type="date" placeholder="选择日期" style="width: 100%;"></el-date-picker>
+                        <el-date-picker v-model="blogForm.date" type="datetime" 
+                        placeholder="选择日期时间" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                     <el-form-item label="分类">
                         <el-select v-model="blogForm.sort_name" filterable allow-create placeholder="请选择分类">
-                            <el-option v-for="item in sortList" :key="item.id" :label="item.sort_name" :value="item.id">
+                            <el-option v-for="item in sortList" :key="item.id" 
+                            :label="item.sort_name" :value="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -81,8 +90,10 @@
                         <el-input v-model="blogForm.mdname" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="技术">
-                        <el-select v-model="blogForm.technology_name" filterable allow-create placeholder="请选择技术">
-                            <el-option v-for="item in technologyList" :key="item.id" :label="item.technology_name" :value="item.id">
+                        <el-select v-model="blogForm.technology_name" filterable 
+                            allow-create placeholder="请选择技术">
+                            <el-option v-for="item in technologyList" :key="item.id" 
+                            :label="item.technology_name" :value="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -127,7 +138,7 @@ export default {
         }
     },
     created() {
-        this.getBlogData()//调用获取博客数据函数
+        this.getBlogData()
     },
     watch: {
         'blogForm.content'(value){
@@ -138,25 +149,47 @@ export default {
         }
     },
     methods: {
+        //处理时间
+        date(time){
+            const t = new Date(time)
+            const y = t.getFullYear()
+            const m = (t.getMonth() + 1 + '').padStart(2, '0')
+            const d = (t.getDate() + '').padStart(2, '0')
+            const hh = (t.getHours() + '').padStart(2, '0')
+            const mm = (t.getMinutes() + '').padStart(2, '0')
+            const ss = (t.getSeconds() + '').padStart(2, '0')
+            return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+        },
         //获取博客数据
         async getBlogData(){
             const {data:res} = await this.$http.get("blogdata",{params:this.queryList})
             if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.blogList = res.data
+            this.blogList.forEach(item => {item.date = this.date(item.date)})
             this.total = res.total
+            this.queryList.key = ''
         },
         //获取分类与标签数据
         async getSTData(){
             const {data:res} = await this.$http.get("blogdatadetail")
             if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
-            this.sortList = res.data.data1
+            this.sortList = res.data.data
             this.technologyList = res.data.data2
         },
         //根据id删除对应blog
         async deleteBlog(value){
-            const {data:res} = await this.$http.post('deleteblog',{id:value.id})
+            const confirmResult = await this.$confirm(
+            '此操作将永久删除该数据, 是否继续?','提示',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).catch(err => err)
+
+            if (confirmResult !== 'confirm') return this.$message({message: '已取消删除',type: 'info',duration:1000})
+            const {data:res} = await this.$http.delete('deleteblog',{params:{id:value.id}})
             if( res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
-            this.$message.success(`${res.tips}`)
+            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.getBlogData()
         },
         //编辑博客
@@ -176,11 +209,8 @@ export default {
             this.showBack = false
         },
         async updateBlog(){
-            if(this.blogForm.sort_name == this.oldSname) 
-            this.blogForm.sort_name = this.blogForm.sortId
-            if(this.blogForm.technology_name == this.oldTname)
-            this.blogForm.technology_name = this.blogForm.technologyId
-            const {data:res} = await this.$http.post('updateblog',this.blogForm)
+            this.dealBlogForm()
+            const {data:res} = await this.$http.put('updateblog',this.blogForm)
             if( res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.$message.success(`${res.tips}`)
             this.getBlogData()
@@ -188,18 +218,24 @@ export default {
             this.showBack = false
             this.editBlogDialog = false
         },
+        //处理传入后端的值
+        dealBlogForm(){
+            if(this.blogForm.sort_name == this.oldSname) 
+            this.blogForm.sort_name = this.blogForm.sortId
+            if(this.blogForm.technology_name == this.oldTname)
+            this.blogForm.technology_name = this.blogForm.technologyId
+            if(!this.blogForm.mdname.split('.').includes('md')){this.blogForm.mdname += '.md'}
+            this.blogForm.date = this.date(this.blogForm.date)
+        },
         //监听每页展示blog数量的变化
         handleSizeChange(newSize) {
             this.queryList.pagesize = newSize
             this.getBlogData()
         },
-        //监听去往第几页的变化
-        handleCurrentChange(newNum) {
-            this.queryList.pagenum = newNum
+        search(){
+            this.queryList.key = this.input
             this.getBlogData()
-        },
-        //点击首页 移除sessionStorage中的id
-        toHome(){window.sessionStorage.removeItem("id");}
+        }
     }
 }
 </script>
@@ -208,6 +244,7 @@ export default {
 @import "../assets/css/md.css";
 .el-card{
    margin-top: 20px;
+   border: none;
    .el-table{
        margin: 20px 0;
        text-align: center;

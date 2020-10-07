@@ -4,9 +4,9 @@ module.exports = {
   chainWebpack: config => {
       //在html页面引用的配置
       config.externals = {
-        vue: 'Vue',
+        'vue': 'Vue',
         'vue-router': 'VueRouter',
-        axios: 'axios',
+        'axios': 'axios',
         'element-ui': 'ELEMENT',
       }
     }

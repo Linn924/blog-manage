@@ -2,10 +2,9 @@
     <div>
         <!-- 面包屑导航区域 -->
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item><a href="/home" @click="toHome">首页</a></el-breadcrumb-item>
+            <el-breadcrumb-item>首页</el-breadcrumb-item>
             <el-breadcrumb-item>添加分类</el-breadcrumb-item>
         </el-breadcrumb>
-        <!-- 面包屑导航区域 end-->
 
         <!-- 卡片区域 -->
         <el-card>
@@ -14,22 +13,21 @@
 
             <!-- 表格中的数据 -->
             <el-table :data="sortList" border stripe>
-                <!-- 索引列 固定格式 -->
                 <el-table-column type="index" label="#"></el-table-column>
                 <el-table-column label="分类名称" prop="sort_name"></el-table-column>
                 <el-table-column label="操作" width="180px">
                     <template slot-scope="scope">
                         <!-- 修改按钮 -->
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="editSort(scope.row)"></el-button>
+                        <el-button type="primary" icon="el-icon-edit" size="mini" 
+                        @click="editSort(scope.row)"></el-button>
                         <!-- 删除按钮 -->
-                        <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini" @click="deleteSort(scope.row)"></el-button>
+                        <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini" 
+                        @click="deleteSort(scope.row)"></el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- 表格中的数据 end-->
             
         </el-card>
-        <!-- 卡片区域 end-->
 
         <!-- 编辑分类 -->
         <el-dialog title="编辑分类" :visible.sync="editSortDialog" width="30%">
@@ -43,7 +41,6 @@
                 <el-button type="primary" @click="updateSort">更新</el-button>
             </span>
         </el-dialog>
-        <!-- 编辑分类 end-->
 
     </div>
 </template>
@@ -68,20 +65,29 @@ export default {
         async getSTData(){
             const {data:res} = await this.$http.get("blogdatadetail")
             if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
-            this.sortList = res.data.data1
+            this.sortList = res.data.data
         },
         //添加分类
         async addsort(){
             if(this.sortForm.sort_name.trim() === '') return this.$message({message: '请输入数据',type: 'error',duration:1000})
             const {data:res} = await this.$http.post("addsort",this.sortForm)
             this.sortForm.sort_name = ''
-            if(res.code != 200) this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.getSTData()
         },
         //根据id删除分类
         async deleteSort(value){
-            const {data:res} = await this.$http.post('deletesort',{id:value.id})
+            const confirmResult = await this.$confirm(
+            '此操作将永久删除该数据, 是否继续?','提示',
+            {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).catch(err => err)
+
+            if (confirmResult !== 'confirm') return this.$message({message: '已取消删除',type: 'info',duration:1000})
+            const {data:res} = await this.$http.delete('deletesort',{params:{id:value.id}})
             if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.getSTData()
@@ -91,15 +97,11 @@ export default {
             this.editSortDialog = true
         },
         async updateSort(){
-            const {data:res} = await this.$http.post('updatesort',this.updateSortData)
+            const {data:res} = await this.$http.put('updatesort',this.updateSortData)
             if( res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
             this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.getSTData()
             this.editSortDialog = false
-        },
-        //点击首页 移除sessionStorage中的id
-        toHome(){
-            window.sessionStorage.removeItem("id");
         }
     }
 }
@@ -108,15 +110,8 @@ export default {
 <style lang="less" scoped>
 .el-card{
    margin-top: 20px;
-   .el-input{
-       width: 200px!important;
-   }
-   .el-button{
-       margin-left: 20px;
-   }
-   .el-table{
-       margin: 20px 0;
-       text-align: center;
-   }
+   .el-input{width: 200px!important;}
+   .el-button{margin-left: 20px;}
+   .el-table{margin: 20px 0;text-align: center;}
 }
 </style>
