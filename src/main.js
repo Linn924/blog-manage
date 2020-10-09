@@ -4,8 +4,8 @@ import './assets/css/global.css'
 import './assets/css/atom-one-dark.css'
 
 //配置请求的根路径
-axios.defaults.baseURL = 'http://127.0.0.1:8888/'
-// axios.defaults.baseURL='http://139.196.210.43:0924/'
+// axios.defaults.baseURL = 'http://127.0.0.1:8888/'
+axios.defaults.baseURL='http://139.196.210.43:0924/'
 
 //axios请求拦截器 在请求有权限的接口时 必须在请求头里面设置一个字段Authorization 此字段的值必须等于token的值
 axios.interceptors.request.use(config => {
