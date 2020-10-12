@@ -4,8 +4,8 @@
         <!-- 头部区域 -->
         <el-header>
             <div>
-                <img src="https://s1.ax1x.com/2020/09/04/wkjLL9.png">
-                <span>博客后台管理系统&nbsp;v1.0</span>
+                <img src="https://s1.ax1x.com/2020/10/12/0WPkND.jpg">
+                <span>博客后台管理系统</span>
             </div>
             <el-button type="info" @click="loginDialog = true" v-show="btnLogin">登录</el-button>
             <el-button type="info" @click="logout" v-show="btnLogout">登出</el-button>

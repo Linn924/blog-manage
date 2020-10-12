@@ -14,12 +14,12 @@
             <el-button type="primary" @click="addBlog" v-show="showBack">上传</el-button>
             <el-row :gutter="2" v-show="showTo">
                 <el-col :span="12">
-                    <el-input type="textarea" v-model="blogForm.content">
+                    <el-input type="textarea" style="height:720px;" v-model="blogForm.content">
                     </el-input>
                 </el-col>
                 <el-col :span="12">
                     <div v-html="html" v-highlight class="markdown-body md" 
-                    :style="{'height':htmlHeight + 'px'}" v-show="showMd">
+                    style="height:720px;" v-show="showMd">
                     </div>
                 </el-col>
             </el-row>
@@ -65,7 +65,6 @@ export default {
     data(){
         return {
             html:'',
-            htmlHeight:'',
             showMd:false,
             showTo:true,
             showBack:false,
@@ -84,10 +83,6 @@ export default {
     },
     created() {
         this.getSTData()//调用获取分类与标签数据函数
-    },
-    mounted() {
-        var textarea = document.querySelector(".textarea")
-        this.htmlHeight = textarea.offsetHeight
     },
     watch:{
         'blogForm.content'(value){
@@ -150,7 +145,8 @@ export default {
     .el-row{
         height: 100%;
         margin-top: 20px;
-        .el-col{height: 100%!important;
+        .el-col{
+            height: 100%!important;
             .md{
                 border-radius: 4px;
                 padding: 0 5px;
