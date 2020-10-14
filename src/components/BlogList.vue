@@ -43,7 +43,7 @@
             </el-table>
 
             <!-- 分页区域-->
-            <el-pagination @size-change="handleSizeChange" 
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                 :current-page="queryList.pagenum" :page-sizes="[3, 5, 8]" 
                 :page-size="queryList.pagesize"
                 layout="total, sizes, prev, pager, next" :total="total">
@@ -212,7 +212,7 @@ export default {
             this.dealBlogForm()
             const {data:res} = await this.$http.put('updateblog',this.blogForm)
             if( res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
-            this.$message.success(`${res.tips}`)
+            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
             this.getBlogData()
             this.showTo = true
             this.showBack = false
@@ -230,6 +230,11 @@ export default {
         //监听每页展示blog数量的变化
         handleSizeChange(newSize) {
             this.queryList.pagesize = newSize
+            this.getBlogData()
+        },
+        //监听去往第几页的变化
+        handleCurrentChange(newNum) {
+            this.queryList.pagenum = newNum
             this.getBlogData()
         },
         search(){
