@@ -1,13 +1,11 @@
 <template>
     <div class="release">
 
-        <!-- 面包屑导航区域 -->
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>首页</el-breadcrumb-item>
             <el-breadcrumb-item>发布博客</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <!-- 卡牌视图区域 -->
         <el-card>
             <el-button type="primary" @click="clickToBtn" v-show="showTo">下一步</el-button>
             <el-button type="primary" @click="clickBackBtn" v-show="showBack">上一步</el-button>
@@ -82,7 +80,7 @@ export default {
         }
     },
     created() {
-        this.getSTData()//调用获取分类与标签数据函数
+        this.getSTData()
     },
     watch:{
         'blogForm.content'(value){
@@ -103,15 +101,16 @@ export default {
             const ss = (t.getSeconds() + '').padStart(2, '0')
             return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
         },
-        //获取分类与标签数据
         async getSTData(){
-            const {data:res} = await this.$http.get("blogdatadetail")
-            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            const {data:res} = await this.axios.get("sortsAndlabels")
+            if(res.code != 200) 
+            return this.$message({message: `${res.tips}`,type: 'error',duration:1200})
             this.sortList = res.data.data
             this.technologyList = res.data.data2
         },
         clickToBtn(){
-            if(this.blogForm.content == '') return this.$message({message: '请填写内容',type: 'error',duration:1000})
+            if(this.blogForm.content.trim() == '') 
+            return this.$message({message: '请填写内容',type: 'error',duration:1200})
             this.showTo = false
             this.showBack = true
         },
@@ -122,9 +121,10 @@ export default {
         async addBlog(){
             if(!this.blogForm.mdname.split('.').includes('md')){this.blogForm.mdname += '.md'}
             this.blogForm.date = this.date(this.blogForm.date)
-            const {data:res} = await this.$http.post('addblog',this.blogForm)
-            if(res.code != 200) this.$message({message: `${res.tips}`,type: 'error',duration:1000})
-            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
+            const {data:res} = await this.axios.post('blogs',this.blogForm)
+            if(res.code != 200) 
+            return this.$message({message: `${res.tips}`,type: 'error',duration:1200})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1200})
             this.blogForm = {
                 title:'',introduce:'',date:'',sortname:'',
                 mdname:'',technologyname:'',content:''

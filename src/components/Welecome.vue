@@ -1,26 +1,24 @@
 <template>
     <div>
-        欢迎使用博客系统
+        欢迎使用简约博客后台管理系统
     </div>
 </template>
 
 <script>
 export default {
     data(){
-        return {
-            
-        }
+        return {}
     }
 }
 </script>
 
 <style lang="less" scoped>
-    div{
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 30px;
-    }
+div{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+}
 </style>

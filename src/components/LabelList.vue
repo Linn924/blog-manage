@@ -1,12 +1,10 @@
 <template>
     <div>
-        <!-- 面包屑导航区域 -->
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>首页</el-breadcrumb-item>
-            <el-breadcrumb-item>添加标签</el-breadcrumb-item>
+            <el-breadcrumb-item>标签列表</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <!-- 卡片区域 -->
         <el-card>
             <el-input v-model="technologyForm.technology_name" width="200px" clearable></el-input>
             <el-button type="primary" @click="addtechnology">添加标签</el-button>
@@ -17,16 +15,17 @@
                 <el-table-column label="操作" width="180px">
                     <template slot-scope="scope">
                         <el-button type="primary" icon="el-icon-edit" size="mini" 
-                        @click="editTechnology(scope.row)"></el-button>
+                            @click="editTechnology(scope.row)">
+                        </el-button>
                         <el-button type="danger" icon="el-icon-delete" size="mini" 
-                        @click="deleteTechnology(scope.row)"></el-button>
+                            @click="deleteTechnology(scope.row)">
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
 
         </el-card>
 
-        <!-- 编辑分类 -->
         <el-dialog title="编辑标签" :visible.sync="editTDialog" width="30%">
             <el-form :model="updateTData">
                  <el-form-item label="分类名称">
@@ -55,25 +54,25 @@ export default {
         }
     },
     created() {
-        this.getSTData()//调用获取分类与标签数据函数
+        this.getSTData()
     },
     methods: {
-        //获取分类与标签数据函数
         async getSTData(){
-            const {data:res} = await this.$http.get("blogdatadetail")
-            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            const {data:res} = await this.axios.get("sortsAndlabels")
+            if(res.code != 200) 
+            return this.$message({message: `${res.tips}`,type: 'error',duration:1200})
             this.technologyList = res.data.data2
         },
-        //添加标签
         async addtechnology(){
-            if(this.technologyForm.technology_name.trim() === '') return this.$message({message: '请输入数据',type: 'error',duration:1000})
-            const {data:res} = await this.$http.post("addtechnology",this.technologyForm)
+            if(this.technologyForm.technology_name.trim() === '') 
+            return this.$message({message: '请输入数据',type: 'error',duration:1200})
+            const {data:res} = await this.axios.post("labels",this.technologyForm)
             this.technologyForm.technology_name = ''
-            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
-            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
+            if(res.code != 200) 
+            return this.$message({message: `${res.tips}`,type: 'error',duration:1200})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1200})
             this.getSTData()
         },
-        //根据id删除标签
         async deleteTechnology(value){
             const confirmResult = await this.$confirm(
             '此操作将永久删除该数据, 是否继续?','提示',
@@ -83,10 +82,12 @@ export default {
                 type: 'warning'
             }).catch(err => err)
 
-            if (confirmResult !== 'confirm') return this.$message({message: '已取消删除',type: 'info',duration:1000})
-            const {data:res} = await this.$http.delete('deletetechnology',{params:{id:value.id}})
-            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
-            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
+            if (confirmResult !== 'confirm') 
+            return this.$message({message: '已取消删除',type: 'info',duration:1200})
+            const {data:res} = await this.axios.delete('labels',{params:{id:value.id}})
+            if(res.code != 200) 
+            return this.$message({message: `${res.tips}`,type: 'error',duration:1200})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1200})
             this.getSTData()
         },
         editTechnology(value){
@@ -94,9 +95,10 @@ export default {
             this.editTDialog = true
         },
         async updateT(){
-            const {data:res} = await this.$http.put('updatetechnology',this.updateTData)
-            if( res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
-            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
+            const {data:res} = await this.axios.put('labels',this.updateTData)
+            if( res.code != 200) 
+            return this.$message({message: `${res.tips}`,type: 'error',duration:1200})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1200})
             this.getSTData()
             this.editTDialog = false
         }
@@ -106,7 +108,12 @@ export default {
 
 <style lang="less" scoped>
 .el-card{
-   margin-top: 20px;
+    height: 85vh;
+    margin-top: 20px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {width: 6px;}
+    &::-webkit-scrollbar-thumb {background-color: #ddd;border-radius: 3px;}
+    &::-webkit-scrollbar-track{background-color: #fff;}
    .el-input{width: 200px!important;}
    .el-button{margin-left: 20px;}
    .el-table{margin: 20px 0;text-align: center;}

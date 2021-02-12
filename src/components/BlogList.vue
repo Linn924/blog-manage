@@ -1,16 +1,12 @@
 <template>
     <section>
 
-        <!-- 面包屑导航区域 -->
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>首页</el-breadcrumb-item>
-            <el-breadcrumb-item>博客数据</el-breadcrumb-item>
+            <el-breadcrumb-item>博客列表</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <!-- 卡牌视图区域 -->
         <el-card>
-
-            <!-- 搜索与添加区域 -->
             <el-row :gutter="20">
                 <el-col :span="8">
                     <el-input placeholder="请输入内容" v-model="input" @keyup.enter.native="search"
@@ -20,39 +16,35 @@
                 </el-col>
             </el-row>
 
-            <!-- 表格中的数据 -->
             <el-table :data="blogList" border stripe>
-                <!-- 索引列 固定格式 -->
                 <el-table-column label="#" type="index"></el-table-column>
                 <el-table-column label="标题" prop="title"></el-table-column>
                 <el-table-column label="简介" prop="introduce"></el-table-column>
                 <el-table-column label="日期" prop="date"></el-table-column>
                 <el-table-column label="分类" prop="sort_name"></el-table-column>
                 <el-table-column label="文件" prop="mdname"></el-table-column>
-                <el-table-column label="技术" prop="technology_name"></el-table-column>
+                <el-table-column label="标签" prop="technology_name"></el-table-column>
+                <el-table-column label="浏览量" prop="pageviews"></el-table-column>
                 <el-table-column label="操作" width="180px">
                     <template slot-scope="scope">
-                        <!-- 修改按钮 -->
                         <el-button type="primary" icon="el-icon-edit" size="mini" 
-                        @click="editBlog(scope.row)"></el-button>
-                        <!-- 删除按钮 -->
+                            @click="editBlog(scope.row)">
+                        </el-button>
                         <el-button type="danger" icon="el-icon-delete" size="mini" 
-                        @click="deleteBlog(scope.row)"></el-button>
+                            @click="deleteBlog(scope.row)">
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
 
-            <!-- 分页区域-->
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="queryList.pagenum" :page-sizes="[3, 5, 8]" 
-                :page-size="queryList.pagesize"
-                layout="total, sizes, prev, pager, next" :total="total">
+                :current-page="queryList.pagenum" :page-sizes="[1, 3, 5]" 
+                :page-size="queryList.pagesize" :total="total"
+                layout="total, sizes, prev, pager, next" >
             </el-pagination>
-            <!-- 分页区域 end-->
 
         </el-card>
         
-        <!-- 编辑博客对话框 -->
         <el-dialog title="编辑博客" :visible.sync="editBlogDialog" width="50%">
             <el-button type="primary" @click="clickToBtn" v-show="showTo">下一步</el-button>
             <el-button type="primary" @click="clickBackBtn" v-show="showBack">上一步</el-button>
@@ -114,7 +106,7 @@ export default {
             queryList:{//分页数据
                 key:'',
                 pagenum:1,
-                pagesize:8
+                pagesize:5
             },
             total:0,//博客总数
             html:'',
@@ -149,7 +141,6 @@ export default {
         }
     },
     methods: {
-        //处理时间
         date(time){
             const t = new Date(time)
             const y = t.getFullYear()
@@ -162,8 +153,9 @@ export default {
         },
         //获取博客数据
         async getBlogData(){
-            const {data:res} = await this.$http.get("blogdata",{params:this.queryList})
-            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            const {data:res} = await this.axios.get("blogs",{params:this.queryList})
+            if(res.code != 200) 
+            return this.$message({message: `${res.tips}`,type: 'error',duration:1200})
             this.blogList = res.data
             this.blogList.forEach(item => {item.date = this.date(item.date)})
             this.total = res.total
@@ -171,8 +163,9 @@ export default {
         },
         //获取分类与标签数据
         async getSTData(){
-            const {data:res} = await this.$http.get("blogdatadetail")
-            if(res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
+            const {data:res} = await this.axios.get("sortsAndlabels")
+            if(res.code != 200) 
+            return this.$message({message: `${res.tips}`,type: 'error',duration:1200})
             this.sortList = res.data.data
             this.technologyList = res.data.data2
         },
@@ -186,10 +179,12 @@ export default {
                 type: 'warning'
             }).catch(err => err)
 
-            if (confirmResult !== 'confirm') return this.$message({message: '已取消删除',type: 'info',duration:1000})
-            const {data:res} = await this.$http.delete('deleteblog',{params:{id:value.id}})
-            if( res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
-            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
+            if (confirmResult !== 'confirm') 
+            return this.$message({message: '已取消删除',type: 'info',duration:1200})
+            const {data:res} = await this.axios.delete('blogs',{params:{id:value.id}})
+            if( res.code != 200) 
+            return this.$message({message: `${res.tips}`,type: 'error',duration:1200})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1200})
             this.getBlogData()
         },
         //编辑博客
@@ -210,9 +205,10 @@ export default {
         },
         async updateBlog(){
             this.dealBlogForm()
-            const {data:res} = await this.$http.put('updateblog',this.blogForm)
-            if( res.code != 200) return this.$message({message: `${res.tips}`,type: 'error',duration:1000})
-            this.$message({message: `${res.tips}`,type: 'success',duration:1000})
+            const {data:res} = await this.axios.put('blogs',this.blogForm)
+            if( res.code != 200) 
+            return this.$message({message: `${res.tips}`,type: 'error',duration:1200})
+            this.$message({message: `${res.tips}`,type: 'success',duration:1200})
             this.getBlogData()
             this.showTo = true
             this.showBack = false
@@ -238,7 +234,7 @@ export default {
             this.getBlogData()
         },
         search(){
-            this.queryList.key = this.input
+            this.queryList.key = this.input 
             this.getBlogData()
         }
     }

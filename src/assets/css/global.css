@@ -1,4 +1,3 @@
-/* 全局样式表*/
 html,
 body,
 #app {
@@ -6,6 +5,10 @@ body,
     margin: 0;
     padding: 0;
     min-width: 1366px;
+}
+
+a{
+    text-decoration: none;
 }
 
 .release .el-card__body{
