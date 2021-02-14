@@ -1,6 +1,5 @@
 <template>
     <section>
-
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>首页</el-breadcrumb-item>
             <el-breadcrumb-item>博客列表</el-breadcrumb-item>
@@ -92,7 +91,6 @@
                 </el-form>
             </div>
         </el-dialog>
-
     </section>
 </template>
 
@@ -242,7 +240,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../assets/css/md.css";
+@import "../../assets/css/md.css";
 .el-card{
    margin-top: 20px;
    border: none;

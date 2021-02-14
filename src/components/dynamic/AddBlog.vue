@@ -1,5 +1,5 @@
 <template>
-    <div class="release">
+    <div id="addblog">
 
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>首页</el-breadcrumb-item>
@@ -60,6 +60,7 @@
 <script>
 import showdown from 'showdown'
 export default {
+    name:'AddBlog',
     data(){
         return {
             html:'',
@@ -137,8 +138,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../assets/css/md.css";
-.release{height: 100%;}
+@import "../../assets/css/md.css";
+#addblog{height: 100%;}
 .el-card{
     height: 95%;
     margin-top: 20px;
@@ -157,6 +158,6 @@ export default {
     }
     .el-form{margin-top: 20px;width: 25vw;}
 }
-.md::-webkit-scrollbar{width: 4px;}
-.md::-webkit-scrollbar-thumb{background-color: #5a76cd;}
+.md::-webkit-scrollbar{width: 5px;}
+.md::-webkit-scrollbar-thumb{background-color: rgb(177, 175, 175);}
 </style>

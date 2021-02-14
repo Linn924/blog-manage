@@ -24,6 +24,7 @@
 
 <script>
 export default {
+    name:'NotFound',
     data(){
         return {
             visible:false,

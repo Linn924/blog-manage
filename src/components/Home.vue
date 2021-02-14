@@ -1,8 +1,8 @@
 <template>
-    <el-container class="home-container">
+    <el-container id="home">
         <el-header>
             <div>
-                <img src="../assets/logo.jpg">
+                <img src="../assets/image/logo.jpg">
                 <span>简约博客后台管理系统</span>
             </div>
             <el-button type="info" @click="logout">登出</el-button>
@@ -29,6 +29,7 @@
 
 <script>
 export default {
+    name:'Home',
     data(){
         return{
             routerList:[
@@ -60,7 +61,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.home-container {
+#home{
     height: 100%;
     background-color: #A9B0BA;
 }

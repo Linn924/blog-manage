@@ -1,14 +1,14 @@
 const Home = () => import( /* webpackChunkName: "home_welecome_notfound" */ '../components/Home.vue')
-const Welecome = () => import( /* webpackChunkName: "home_welecome_notfound" */ '../components/Welecome.vue')
-const NotFound = () => import(/* webpackChunkName: "home_welecome_notfound" */'../components/NotFound.vue')
+const Welecome = () => import( /* webpackChunkName: "home_welecome_notfound" */ '../components/dynamic/Welecome.vue')
+const NotFound = () => import(/* webpackChunkName: "home_welecome_notfound" */'../components/dynamic/NotFound.vue')
 
-const Login = () => import( /* webpackChunkName: "login" */ '../components/Login.vue')
-const BlogList = () => import( /* webpackChunkName: "bloglist_addblog" */ '../components/BlogList.vue')
-const AddBlog = () => import( /* webpackChunkName: "bloglist_addblog" */ '../components/AddBlog.vue')
-const SortList = () => import( /* webpackChunkName: "sortlist" */ '../components/SortList.vue')
-const LabelList = () => import( /* webpackChunkName: "labellist" */ '../components/LabelList.vue')
-const CommentList = () => import( /* webpackChunkName: "commentlist" */ '../components/CommentList.vue')
-const UserList = () => import( /* webpackChunkName: "userlist" */ '../components/UserList.vue')
+const Login = () => import( /* webpackChunkName: "login" */ '../components/dynamic/Login.vue')
+const BlogList = () => import( /* webpackChunkName: "bloglist_addblog" */ '../components/dynamic/BlogList.vue')
+const AddBlog = () => import( /* webpackChunkName: "bloglist_addblog" */ '../components/dynamic/AddBlog.vue')
+const SortList = () => import( /* webpackChunkName: "sortlist" */ '../components/dynamic/SortList.vue')
+const LabelList = () => import( /* webpackChunkName: "labellist" */ '../components/dynamic/LabelList.vue')
+const CommentList = () => import( /* webpackChunkName: "commentlist" */ '../components/dynamic/CommentList.vue')
+const UserList = () => import( /* webpackChunkName: "userlist" */ '../components/dynamic/UserList.vue')
 
 
 

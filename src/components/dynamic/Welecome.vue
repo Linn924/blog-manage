@@ -1,6 +1,6 @@
 <template>
     <div>
-        欢迎使用简约博客后台管理系统
+        欢迎使用博客管理系统
     </div>
 </template>
 
